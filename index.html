@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1 año, 4 meses y contando... 🤍</title>
+    <meta name="description" content="Una carta de amor interactiva para celebrar nuestro tiempo juntos. 1 año y 4 meses de risas, aventuras y momentos mágicos.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Canvas for Floating Particle Background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Canvas for Confetti Explosion -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+        <div class="hero-content">
+            <div class="watercolor-container float-anim">
+                <img src="assets/watercolor_heart.png" alt="Watercolor heart illustration" class="watercolor-heart-img">
+            </div>
+            <h1 class="hero-title" id="typing-title"></h1>
+            <p class="hero-subtitle">Cada segundo a tu lado es mi parte favorita de la historia.</p>
+            <div class="scroll-down" aria-label="Desplazarse hacia abajo">
+                <span class="scroll-arrow"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Poetic Section: Desde ese día -->
+    <section class="poetic-section" id="desde-ese-dia">
+        <div class="section-container">
+            <h2 class="section-title reveal-text">Desde ese día...</h2>
+            <div class="poetic-content">
+                <p class="reveal-paragraph">
+                    El tiempo comenzó a medirse diferente. No son solo horas que transcurren en el calendario; es el espacio que creamos al <span class="highlight-underline">caminar juntos</span>. Es la complicidad de nuestras risas, las tazas de café compartidas a mitad de la tarde, y esa certeza silenciosa de que <span class="highlight-underline">el hogar no es un lugar, sino una persona</span>.
+                </p>
+                <p class="reveal-paragraph">
+                    En estos 16 meses, he aprendido a mirar el mundo a través de tus ojos. Cada rincón de la rutina se ha llenado de luz, y hoy sé que, pase lo que pase, el mejor plan de cualquier día siempre será encontrarnos y pintarlo con <span class="highlight-underline">el color de nuestro propio atardecer</span>.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section" id="stats">
+        <div class="section-container">
+            <h2 class="section-title reveal-text">Nuestra historia en números</h2>
+            <div class="stats-grid">
+                <!-- Stat 1 -->
+                <div class="stat-card reveal-card">
+                    <div class="stat-icon">☀️</div>
+                    <div class="stat-number-wrapper">
+                        <span class="stat-number" data-target="487">0</span>
+                    </div>
+                    <p class="stat-label">Días llenos de risas, complicidad y aventuras compartidas</p>
+                </div>
+                <!-- Stat 2 -->
+                <div class="stat-card reveal-card">
+                    <div class="stat-icon">🌅</div>
+                    <div class="stat-number-wrapper">
+                        <span class="stat-number" data-target="143">0</span>
+                    </div>
+                    <p class="stat-label">Atardeceres mágicos contemplados tomados de la mano</p>
+                </div>
+                <!-- Stat 3 -->
+                <div class="stat-card reveal-card">
+                    <div class="stat-icon">❤️</div>
+                    <div class="stat-number-wrapper">
+                        <span class="stat-number" data-target="9999" data-suffix="+">0</span>
+                    </div>
+                    <p class="stat-label">Veces que te he dicho que te quiero (y aún se quedan cortas)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Message Card Section -->
+    <section class="message-section" id="love-letter">
+        <div class="section-container">
+            <div class="letter-wrapper reveal-letter">
+                <div class="letter-card">
+                    <div class="letter-bg-decor">
+                        <img src="assets/watercolor_shape.png" alt="Watercolor background splash" class="letter-watercolor">
+                    </div>
+                    <div class="letter-content">
+                        <p class="poem-line">Escribo tu nombre en el viento</p>
+                        <p class="poem-line">y en la arena de cada tarde,</p>
+                        <p class="poem-line">porque quererte no es un momento,</p>
+                        <p class="poem-line">sino este fuego que despacio arde.</p>
+                        
+                        <p class="poem-line break-line"></p>
+                        
+                        <p class="poem-line">Gracias por ser mi paz y mi locura,</p>
+                        <p class="poem-line">el refugio donde siempre quiero volver,</p>
+                        <p class="poem-line">la melodía más dulce y pura,</p>
+                        <p class="poem-line">el amanecer que siempre quiero ver.</p>
+                        
+                        <p class="poem-signature">— Con todo mi amor</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Closing Section -->
+    <section class="closing-section" id="closing">
+        <div class="closing-content">
+            <h2 class="closing-title">Gracias por quedarte</h2>
+            <p class="closing-subtitle">Por cada risa, cada abrazo y todo lo que está por venir.</p>
+            <button class="love-btn" id="love-button" aria-label="Enviar amor">
+                Te quiero <span class="heart-icon">🤍</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Core Script -->
+    <script src="script.js"></script>
+</body>
+</html>

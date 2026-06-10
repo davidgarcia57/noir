@@ -1,0 +1,683 @@
+/* ==========================================================================
+   DESIGN SYSTEM & VARIABLES
+   ========================================================================== */
+:root {
+    /* Color Palette */
+    --color-coral: #FF6B6B;
+    --color-peach: #FFB347;
+    --color-lavender: #A78BFA;
+    --color-sand: #FFF1E6;
+    --color-white: #FFFFFF;
+    --color-dark: #2D3748;
+    --color-dark-muted: #4A5568;
+    
+    /* Gradients */
+    --grad-sunset: linear-gradient(135deg, var(--color-peach) 0%, var(--color-coral) 50%, var(--color-lavender) 100%);
+    --grad-soft: linear-gradient(135deg, #FFF8F2 0%, var(--color-sand) 100%);
+    --grad-button: linear-gradient(135deg, var(--color-coral) 0%, #FF5252 100%);
+    
+    /* Fonts */
+    --font-heading: 'Fraunces', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+    --font-handwritten: 'Caveat', cursive;
+    
+    /* Shadows */
+    --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
+    --shadow-medium: 0 16px 40px rgba(0, 0, 0, 0.08);
+    --shadow-glass: 0 8px 32px 0 rgba(255, 107, 107, 0.06);
+    --shadow-letter: 0 20px 50px rgba(45, 55, 72, 0.07);
+}
+
+/* ==========================================================================
+   RESET & BASE STYLES
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-sand);
+    color: var(--color-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    /* Soft background gradient overlay */
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(255, 179, 71, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(167, 139, 250, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(255, 107, 107, 0.1) 0px, transparent 50%);
+    background-attachment: fixed;
+}
+
+/* Canvas Element Styles */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--color-sand);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 107, 107, 0.3);
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-coral);
+}
+
+/* Common Layout Containers */
+.section-container {
+    max-width: 900px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 5rem 0;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY & UTILITIES
+   ========================================================================== */
+.section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 700;
+    color: var(--color-dark);
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+.hero-section {
+    min-height: 100vh;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 2rem;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.watercolor-container {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.watercolor-heart-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 16px rgba(255, 107, 107, 0.2));
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 800;
+    color: var(--color-dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.25;
+    min-height: 6rem;
+    text-shadow: 0 0 25px rgba(255, 107, 107, 0.1);
+}
+
+.hero-title::after {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 1em;
+    background-color: var(--color-coral);
+    margin-left: 6px;
+    vertical-align: -0.1em;
+    animation: blink-caret 0.75s step-end infinite;
+}
+
+.hero-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--color-dark-muted);
+    font-weight: 400;
+    max-width: 500px;
+    margin: 0 auto 3rem auto;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-up 1s cubic-bezier(0.23, 1, 0.32, 1) 1.5s forwards;
+}
+
+/* Scroll down indicator */
+.scroll-down {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    opacity: 0;
+    animation: fade-in 1s ease 2.2s forwards;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+}
+
+.scroll-arrow {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-bottom: 2px solid var(--color-coral);
+    border-right: 2px solid var(--color-coral);
+    transform: rotate(45deg);
+    animation: scroll-bounce 2s infinite;
+}
+
+/* ==========================================================================
+   POETIC SECTION: DESDE ESE DIA
+   ========================================================================== */
+.poetic-section {
+    padding: 6rem 0;
+    background-color: transparent;
+}
+
+.poetic-content {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.poetic-content p {
+    font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+    font-family: var(--font-body);
+    color: var(--color-dark);
+    line-height: 1.8;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+/* Highlight Underline Effect */
+.highlight-underline {
+    position: relative;
+    display: inline;
+    background-image: linear-gradient(120deg, rgba(255, 179, 71, 0.4) 0%, rgba(255, 107, 107, 0.4) 100%);
+    background-repeat: no-repeat;
+    background-size: 0% 0.35em;
+    background-position: 0 88%;
+    transition: background-size 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+    padding: 0 4px;
+}
+
+.highlight-underline.active {
+    background-size: 100% 0.35em;
+}
+
+/* ==========================================================================
+   STATS COUNTER SECTION
+   ========================================================================== */
+.stats-section {
+    padding: 6rem 0;
+    background-color: transparent;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2rem;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-medium), 0 10px 30px rgba(255, 107, 107, 0.08);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+    animation: icon-float 3s ease-in-out infinite alternate;
+}
+
+.stat-number-wrapper {
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 5vw, 4rem);
+    font-weight: 900;
+    color: var(--color-coral);
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    color: var(--color-dark-muted);
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+/* Custom animation delay for card icons */
+.stats-grid > div:nth-child(2) .stat-icon { animation-delay: 0.5s; }
+.stats-grid > div:nth-child(3) .stat-icon { animation-delay: 1s; }
+
+/* ==========================================================================
+   LOVE LETTER MESSAGE CARD SECTION
+   ========================================================================== */
+.message-section {
+    padding: 6rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+}
+
+.letter-wrapper {
+    perspective: 1000px;
+    width: 100%;
+}
+
+.letter-card {
+    background: #FFFDF9;
+    border-radius: 20px;
+    box-shadow: var(--shadow-letter);
+    padding: 4.5rem 3.5rem;
+    position: relative;
+    overflow: hidden;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    transform: rotate(-1.5deg);
+    border: 1px solid rgba(255, 179, 71, 0.15);
+    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.15), box-shadow 0.7s ease;
+}
+
+.letter-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: var(--grad-sunset);
+}
+
+.letter-wrapper:hover .letter-card {
+    transform: rotate(0.5deg) scale(1.02);
+    box-shadow: 0 30px 60px rgba(45, 55, 72, 0.12);
+}
+
+.letter-bg-decor {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 240px;
+    height: 240px;
+    opacity: 0.25;
+    pointer-events: none;
+    transition: transform 0.7s ease, opacity 0.7s ease;
+}
+
+.letter-watercolor {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.letter-wrapper:hover .letter-bg-decor {
+    transform: scale(1.1) rotate(10deg);
+    opacity: 0.35;
+}
+
+.letter-content {
+    position: relative;
+    z-index: 5;
+}
+
+.poem-line {
+    font-family: var(--font-handwritten);
+    font-size: clamp(1.45rem, 3.5vw, 1.8rem);
+    color: #3C2A21;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.poem-line.break-line {
+    height: 1.5rem;
+    margin-bottom: 0;
+}
+
+.poem-signature {
+    font-family: var(--font-handwritten);
+    font-size: clamp(1.6rem, 3.8vw, 2rem);
+    color: var(--color-coral);
+    text-align: right;
+    margin-top: 3rem;
+    transform: rotate(-2deg);
+}
+
+/* ==========================================================================
+   CLOSING SECTION
+   ========================================================================== */
+.closing-section {
+    min-height: 100vh;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 2rem;
+    text-align: center;
+    background-image: 
+        linear-gradient(to top, rgba(255, 107, 107, 0.08) 0%, transparent 100%),
+        radial-gradient(circle at center, rgba(167, 139, 250, 0.05) 0%, transparent 70%);
+}
+
+.closing-content {
+    max-width: 600px;
+    z-index: 10;
+}
+
+.closing-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    color: var(--color-dark);
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 20px rgba(167, 139, 250, 0.1);
+}
+
+.closing-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--color-dark-muted);
+    margin-bottom: 3.5rem;
+}
+
+/* Premium Bouncy Love Button */
+.love-btn {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-white);
+    background: var(--grad-button);
+    border: none;
+    padding: 1.2rem 3rem;
+    border-radius: 50px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 
+        0 10px 25px rgba(255, 107, 107, 0.4),
+        inset 0 -4px 0px rgba(0, 0, 0, 0.15);
+    transition: 
+        transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.5), 
+        box-shadow 0.3s ease, 
+        filter 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.love-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+    transition: 0.75s;
+    opacity: 0;
+}
+
+.love-btn:hover {
+    transform: scale(1.08) translateY(-3px);
+    box-shadow: 
+        0 15px 30px rgba(255, 107, 107, 0.5),
+        inset 0 -4px 0px rgba(0, 0, 0, 0.15);
+}
+
+.love-btn:hover::before {
+    left: 120%;
+    opacity: 1;
+}
+
+.love-btn:active {
+    transform: scale(0.96) translateY(1px);
+    box-shadow: 
+        0 5px 15px rgba(255, 107, 107, 0.4),
+        inset 0 -2px 0px rgba(0, 0, 0, 0.15);
+}
+
+.heart-icon {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.5);
+}
+
+.love-btn:hover .heart-icon {
+    transform: scale(1.3) rotate(10deg);
+}
+
+/* ==========================================================================
+   SCROLL TRIGGERED INTERSECTION ANIMATIONS
+   ========================================================================== */
+/* Generic fade-up reveal elements */
+.reveal-text,
+.reveal-paragraph,
+.reveal-card,
+.reveal-letter {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s cubic-bezier(0.23, 1, 0.32, 1), transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Stagger transitions for list-like cards or components */
+.reveal-paragraph:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.stats-grid > .stat-card:nth-child(1) { transition-delay: 0.1s; }
+.stats-grid > .stat-card:nth-child(2) { transition-delay: 0.3s; }
+.stats-grid > .stat-card:nth-child(3) { transition-delay: 0.5s; }
+
+/* Active reveal class injected by JavaScript */
+.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   KEYFRAME ANIMATIONS
+   ========================================================================== */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--color-coral) }
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+@keyframes fade-up {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in {
+    to { opacity: 1; }
+}
+
+@keyframes scroll-bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) rotate(45deg);
+    }
+    40% {
+        transform: translateY(-8px) rotate(45deg);
+    }
+    60% {
+        transform: translateY(-4px) rotate(45deg);
+    }
+}
+
+@keyframes float-anim {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(2deg);
+    }
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+.float-anim {
+    animation: float-anim 5s ease-in-out infinite;
+}
+
+@keyframes icon-float {
+    from {
+        transform: translateY(0px);
+    }
+    to {
+        transform: translateY(-6px);
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE-FIRST)
+   ========================================================================== */
+@media (max-width: 768px) {
+    html {
+        font-size: 15px;
+    }
+    
+    .section-container {
+        padding: 4rem 0;
+        width: 88%;
+    }
+    
+    .hero-section {
+        padding: 1.5rem;
+    }
+    
+    .watercolor-container {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-title {
+        min-height: 7.5rem;
+    }
+    
+    .poetic-content p {
+        text-align: left;
+    }
+    
+    .letter-card {
+        padding: 3.5rem 2rem;
+    }
+    
+    .letter-bg-decor {
+        width: 160px;
+        height: 160px;
+        bottom: -10px;
+        right: -10px;
+    }
+    
+    .poem-line {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+    
+    .hero-title {
+        min-height: 9rem;
+    }
+    
+    .letter-card {
+        padding: 2.5rem 1.5rem;
+    }
+    
+    .poem-line {
+        font-size: 1.25rem;
+    }
+    
+    .stats-grid {
+        gap: 1.5rem;
+    }
+    
+    .stat-card {
+        padding: 2.5rem 1.5rem;
+    }
+}
